@@ -43,6 +43,7 @@ public class KakaoService {
                 );
 
         return response.getBody();
+
     }
 
 
@@ -64,6 +65,7 @@ public class KakaoService {
         return response.getBody()
                 .getKakaoAccount()
                 .getEmail();
+
     }
 
 

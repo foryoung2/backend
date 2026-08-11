@@ -31,6 +31,7 @@ public class AuthController {
         authService.logout(accessToken);
 
         return ResponseEntity.noContent().build();
+
     }
 
 
@@ -38,6 +39,7 @@ public class AuthController {
     public ResponseEntity<JwtTokenResponse> refresh(@Valid @RequestBody RefreshTokenRequest request) {
 
         return ResponseEntity.ok(authService.refresh(request.getRefreshToken()));
+
     }
 
 

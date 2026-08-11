@@ -31,18 +31,21 @@ public class TokenService {
                 tokenDto.getRefreshTokenExpiresIn(),
                 TimeUnit.MILLISECONDS
         );
+
     }
 
 
     public String getRefreshToken(String email) {
 
         return (String) redisTemplate.opsForValue().get(REFRESH_PREFIX + email);
+
     }
 
 
     public void deleteRefreshToken(String email) {
 
         redisTemplate.delete(REFRESH_PREFIX + email);
+
     }
 
 
@@ -54,12 +57,14 @@ public class TokenService {
                 jwtTokenProvider.getRemainingExpiration(accessToken),
                 TimeUnit.MILLISECONDS
         );
+
     }
 
 
     public boolean isBlacklisted(String accessToken) {
 
         return redisTemplate.hasKey(BLACKLIST_PREFIX + accessToken);
+
     }
 
 

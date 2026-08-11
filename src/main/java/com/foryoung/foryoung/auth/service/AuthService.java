@@ -1,14 +1,14 @@
 package com.foryoung.foryoung.auth.service;
 
 import com.foryoung.foryoung.auth.dto.JwtTokenResponse;
+import com.foryoung.foryoung.global.exception.CustomException;
+import com.foryoung.foryoung.global.exception.ErrorCode;
 import com.foryoung.foryoung.global.jwt.JwtTokenProvider;
 import com.foryoung.foryoung.member.entity.Member;
 import com.foryoung.foryoung.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -27,13 +27,14 @@ public class AuthService {
 
         tokenService.deleteRefreshToken(email);
         tokenService.saveLogoutToken(accessToken);
+
     }
 
 
     public JwtTokenResponse refresh(String refreshToken) {
 
         if (!jwtTokenProvider.validateToken(refreshToken)) {
-            throw new IllegalArgumentException("Refresh token is invalid");
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         String email = jwtTokenProvider.getUsername(refreshToken);
@@ -41,17 +42,18 @@ public class AuthService {
         String savedToken = tokenService.getRefreshToken(email);
 
         if (savedToken == null || !savedToken.equals(refreshToken)) {
-            throw new IllegalArgumentException("Refresh token does not match the stored token");
+            throw new CustomException(ErrorCode.REFRESH_TOKEN_MISMATCH);
         }
 
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("User not found with email: " + email));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         JwtTokenResponse tokenResponse = jwtTokenProvider.generateToken(member);
 
         tokenService.saveRefreshToken(member, tokenResponse);
 
         return tokenResponse;
+
     }
 
 

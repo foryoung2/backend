@@ -1,5 +1,7 @@
 package com.foryoung.foryoung.auth.userdetails;
 
+import com.foryoung.foryoung.global.exception.CustomException;
+import com.foryoung.foryoung.global.exception.ErrorCode;
 import com.foryoung.foryoung.member.entity.Member;
 import com.foryoung.foryoung.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +22,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         Member member = memberRepository.findByEmail(email)
-                        .orElseThrow(() -> new UsernameNotFoundException("Member not found"));
+                        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         if (member.isDeleted()) {
-            throw new UsernameNotFoundException("Deleted member");
+            throw new CustomException(ErrorCode.DELETED_MEMBER);
         }
 
         return new CustomUserDetails(member.getId(), member.getEmail(), member.getRole());
+
     }
 
 

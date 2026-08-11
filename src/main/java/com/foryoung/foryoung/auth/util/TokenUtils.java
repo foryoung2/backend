@@ -17,6 +17,7 @@ public final class TokenUtils {
         }
 
         return authorizationHeader.substring(BEARER_PREFIX.length());
+
     }
 
 
