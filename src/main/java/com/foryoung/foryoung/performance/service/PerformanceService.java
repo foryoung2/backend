@@ -16,6 +16,8 @@ import com.foryoung.foryoung.search.repository.PerformanceSearchRepository;
 import com.foryoung.foryoung.venue.entity.Venue;
 import com.foryoung.foryoung.venue.repository.VenueRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +59,15 @@ public class PerformanceService {
 
         return performanceMapper.toPerformanceResponse(savedPerformance);
 
+    }
+
+
+    public Page<PerformanceResponse> getPerformances(Pageable pageable) {
+
+        return performanceRepository
+                .findAll(pageable)
+                .map(performanceMapper::toPerformanceResponse);
+        
     }
 
 
