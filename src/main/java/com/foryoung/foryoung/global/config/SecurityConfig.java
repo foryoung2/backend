@@ -4,6 +4,7 @@ import com.foryoung.foryoung.global.jwt.JwtAuthenticationFilter;
 import com.foryoung.foryoung.global.jwt.JwtTokenProvider;
 import com.foryoung.foryoung.auth.userdetails.CustomUserDetailsService;
 import com.foryoung.foryoung.auth.service.TokenService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,8 +76,40 @@ public class SecurityConfig {
 
                         .requestMatchers("/performance-records/**").hasRole("USER")
 
+                        .requestMatchers(HttpMethod.GET, "/performance-reviews/public").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/performance-reviews/liked").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/performance-reviews/*").permitAll()
+                        .requestMatchers("/performance-reviews").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/performance-reviews/comments/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/performance-reviews/comments/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.PATCH, "/performance-reviews/comments/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/performance-reviews/comments/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/performance-reviews/*/likes").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/performance-reviews/*/likes").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/performance-reviews/liked").hasRole("USER")
+
+                        .requestMatchers(HttpMethod.GET, "/venues/**").permitAll()
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/venue-views/*",
+                                "/venue-views/*/views"
+                        ).permitAll()
+
                         .anyRequest().authenticated()
                 )
+
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(
+                                (request, response, authException) -> {
+                                    response.sendError(
+                                            HttpServletResponse.SC_UNAUTHORIZED,
+                                            "Unauthorized"
+                                    );
+                                }
+                        )
+                )
+
                 .addFilterBefore(
                         new JwtAuthenticationFilter(
                                 tokenProvider,
@@ -97,7 +130,7 @@ public class SecurityConfig {
 
             CorsConfiguration configuration = new CorsConfiguration();
 
-            configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+            configuration.setAllowedOrigins(List.of("http://localhost:5173"));
             configuration.setAllowedMethods(List.of("*"));
             configuration.setAllowedHeaders(List.of("*"));
             configuration.setAllowCredentials(true);
