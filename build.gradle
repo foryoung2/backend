@@ -44,13 +44,21 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
+	// Redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	// QueryDSL
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
+
+	// Elasticsearch
+	implementation 'co.elastic.clients:elasticsearch-java:9.4.3'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.1'
+
+	implementation 'net.sourceforge.tess4j:tess4j:5.18.0'
 
 }
 

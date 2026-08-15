@@ -44,9 +44,9 @@ public enum ErrorCode {
     INVALID_IMAGE_TYPE(HttpStatus.BAD_REQUEST, "VENUE_VIEW_IMAGE_002", "Unsupported image type"),
     IMAGE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "VENUE_VIEW_IMAGE_003", "Image size exceeds the allowed limit"),
     IMAGE_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "VENUE_VIEW_IMAGE_004", "Failed to save image"),
-    IMAGE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "VENUE_VIEW_IMAGE_005", "Failed to delete image");
+    IMAGE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "VENUE_VIEW_IMAGE_005", "Failed to delete image"),
 
-    
+    ELASTICSEARCH_OPERATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "SEARCH_001", "Search service is temporarily unavailable");
     private final HttpStatus status;
     private final String code;
     private final String message;
