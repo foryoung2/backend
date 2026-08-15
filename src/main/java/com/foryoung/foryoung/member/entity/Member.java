@@ -20,7 +20,7 @@ public class Member {
     @Column(unique = true)
     private String email;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     @Enumerated(EnumType.STRING)
@@ -34,11 +34,17 @@ public class Member {
     private LocalDateTime deletedAt;
 
 
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+
     public void withdraw() {
 
         this.email = null;
         this.nickname = null;
         this.status = MemberStatus.DELETED;
+
     }
 
 
@@ -52,6 +58,7 @@ public class Member {
         return isDeleted()
                 ? "탈퇴한 사용자"
                 : nickname;
+
     }
 
 

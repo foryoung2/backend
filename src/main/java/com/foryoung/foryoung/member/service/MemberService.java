@@ -1,8 +1,11 @@
 package com.foryoung.foryoung.member.service;
 
 import com.foryoung.foryoung.auth.dto.JwtTokenResponse;
+import com.foryoung.foryoung.global.exception.CustomException;
+import com.foryoung.foryoung.global.exception.ErrorCode;
 import com.foryoung.foryoung.global.jwt.JwtTokenProvider;
 import com.foryoung.foryoung.auth.service.TokenService;
+import com.foryoung.foryoung.member.dto.NicknameUpdateRequest;
 import com.foryoung.foryoung.member.entity.Member;
 import com.foryoung.foryoung.member.entity.MemberStatus;
 import com.foryoung.foryoung.member.entity.Role;
@@ -13,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -38,7 +40,7 @@ public class MemberService {
         Member member = findOrCreateMember(email);
 
         if (member.isDeleted()) {
-            throw new IllegalStateException("Deleted account cannot login");
+            throw new CustomException(ErrorCode.DELETED_MEMBER);
         }
 
         JwtTokenResponse response = jwtTokenProvider.generateToken(member);
@@ -46,6 +48,37 @@ public class MemberService {
         tokenService.saveRefreshToken(member, response);
 
         return response;
+
+    }
+
+
+    public Member findMemberById(Long memberId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        if (member.isDeleted()) {
+            throw new CustomException(ErrorCode.DELETED_MEMBER);
+        }
+
+        return member;
+
+    }
+
+
+    @Transactional
+    public void updateNickname(Long memberId, NicknameUpdateRequest request) {
+
+        Member member = findMemberById(memberId);
+
+        String nickname = request.getNickname().trim();
+
+        if(memberRepository.existsByNicknameAndIdNot(nickname, memberId)) {
+            throw new CustomException(ErrorCode.NICKNAME_ALREADY_EXISTS);
+        }
+
+        member.updateNickname(nickname);
+
     }
 
 
@@ -61,23 +94,11 @@ public class MemberService {
     }
 
 
-    public Member findMemberById(Long memberId) {
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoSuchElementException("Member not found"));
-
-        if (member.isDeleted()) {
-            throw new IllegalStateException("Deleted member");
-        }
-
-        return member;
-    }
-
-
     private Member findOrCreateMember(String email) {
 
         return memberRepository.findByEmail(email)
                 .orElseGet(() -> createMember(email));
+
     }
 
 
@@ -91,6 +112,7 @@ public class MemberService {
                 .build();
 
         return memberRepository.save(member);
+
     }
 
 
