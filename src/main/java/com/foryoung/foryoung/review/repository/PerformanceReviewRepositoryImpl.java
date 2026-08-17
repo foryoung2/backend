@@ -1,10 +1,14 @@
 package com.foryoung.foryoung.review.repository;
 
 import com.foryoung.foryoung.member.entity.MemberStatus;
+import com.foryoung.foryoung.performance.entity.QPerformance;
+import com.foryoung.foryoung.performance.entity.QPerformanceRecord;
+import com.foryoung.foryoung.performance.entity.QPerformanceSchedule;
 import com.foryoung.foryoung.review.entity.QPerformanceReview;
 import com.foryoung.foryoung.review.entity.QReviewComment;
 import com.foryoung.foryoung.review.entity.QReviewLike;
 import com.foryoung.foryoung.review.dto.PerformanceReviewResponse;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -39,6 +43,16 @@ public class PerformanceReviewRepositoryImpl implements PerformanceReviewReposit
             );
         }
 
+        Expression<Boolean> ownerExpression;
+
+        if (memberId != null) {
+            ownerExpression =
+                    review.performanceRecord.member.id.eq(memberId);
+        } else {
+            ownerExpression =
+                    Expressions.constant(false);
+        }
+
         return queryFactory
                 .select(
                         Projections.constructor(
@@ -58,7 +72,8 @@ public class PerformanceReviewRepositoryImpl implements PerformanceReviewReposit
                                 review.updatedAt,
                                 like.id.countDistinct(),
                                 comment.id.countDistinct(),
-                                Expressions.constant(false)
+                                Expressions.constant(false),
+                                ownerExpression
                         )
                 )
                 .from(review)
@@ -102,6 +117,8 @@ public class PerformanceReviewRepositoryImpl implements PerformanceReviewReposit
 
         QReviewComment comment = QReviewComment.reviewComment;
 
+        Expression<Boolean> ownerExpression = review.performanceRecord.member.id.eq(memberId);
+
         return queryFactory
                 .select(
                         Projections.constructor(
@@ -121,7 +138,8 @@ public class PerformanceReviewRepositoryImpl implements PerformanceReviewReposit
                                 review.updatedAt,
                                 like.id.countDistinct(),
                                 comment.id.countDistinct(),
-                                Expressions.constant(false)
+                                Expressions.constant(false),
+                                ownerExpression
                         )
                 )
                 .from(review)
@@ -163,6 +181,12 @@ public class PerformanceReviewRepositoryImpl implements PerformanceReviewReposit
 
         QPerformanceReview review = QPerformanceReview.performanceReview;
 
+        QPerformanceRecord performanceRecord = QPerformanceRecord.performanceRecord;
+
+        QPerformanceSchedule schedule = QPerformanceSchedule.performanceSchedule;
+
+        QPerformance performance = QPerformance.performance;
+
         QReviewLike like = QReviewLike.reviewLike;
 
         QReviewComment comment = QReviewComment.reviewComment;
@@ -173,6 +197,16 @@ public class PerformanceReviewRepositoryImpl implements PerformanceReviewReposit
             accessibleCondition = accessibleCondition.or(
                     review.performanceRecord.member.id.eq(memberId)
             );
+        }
+
+        Expression<Boolean> ownerExpression;
+
+        if (memberId != null) {
+            ownerExpression =
+                    review.performanceRecord.member.id.eq(memberId);
+        } else {
+            ownerExpression =
+                    Expressions.constant(false);
         }
 
         return queryFactory
@@ -194,10 +228,17 @@ public class PerformanceReviewRepositoryImpl implements PerformanceReviewReposit
                                 review.updatedAt,
                                 like.id.countDistinct(),
                                 comment.id.countDistinct(),
-                                Expressions.constant(false)
+                                Expressions.constant(false),
+                                ownerExpression
                         )
                 )
                 .from(review)
+
+                .join(review.performanceRecord, performanceRecord)
+
+                .join(performanceRecord.schedule, schedule)
+
+                .join(schedule.performance, performance)
 
                 .leftJoin(like)
                 .on(like.performanceReview.eq(review))
@@ -209,8 +250,7 @@ public class PerformanceReviewRepositoryImpl implements PerformanceReviewReposit
                 )
 
                 .where(
-                        review.performanceRecord.schedule.performance.id
-                                .eq(performanceId),
+                        performance.id.eq(performanceId),
                         accessibleCondition
                 )
 

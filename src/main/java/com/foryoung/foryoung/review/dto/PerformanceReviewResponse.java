@@ -34,9 +34,16 @@ public class PerformanceReviewResponse {
 
     private boolean liked;
 
+    private boolean owner;
+
 
     public void setLiked(boolean liked) {
         this.liked = liked;
+    }
+
+
+    public void setOwner(boolean owner) {
+        this.owner = owner;
     }
 
 

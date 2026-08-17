@@ -17,6 +17,7 @@ public interface PerformanceReviewMapper {
     @Mapping(target = "likeCount", ignore = true)
     @Mapping(target = "commentCount", ignore = true)
     @Mapping(target = "liked", ignore = true)
+    @Mapping(target = "owner", ignore = true)
     PerformanceReviewResponse toPerformanceReviewResponse(PerformanceReview review);
 
 

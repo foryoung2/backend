@@ -85,27 +85,24 @@ public class PerformanceReviewService {
             review = reviewRepository.findPublicReview(reviewId)
                     .orElseThrow(() -> new CustomException(ErrorCode.PERFORMANCE_REVIEW_NOT_FOUND));
 
-            return toReviewResponse(review);
+            PerformanceReviewResponse response = toReviewResponse(review);
+            response.setOwner(false);
+
+            return response;
+
         }
 
         review = reviewRepository.findAccessibleReview(reviewId, memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.PERFORMANCE_REVIEW_NOT_FOUND));
 
-        return toReviewResponse(review, memberId
-        );
+        return toReviewResponse(review, memberId);
 
     }
 
 
     public List<PerformanceReviewResponse> getReviews(Long memberId) {
 
-        List<PerformanceReviewResponse> reviews = reviewRepository.findReviews(memberId);
-
-        if (memberId != null) {
-            applyLiked(reviews, memberId);
-        }
-
-        return reviews;
+        return reviewRepository.findReviews(memberId);
 
     }
 
@@ -117,21 +114,13 @@ public class PerformanceReviewService {
         applyLiked(reviews, memberId);
 
         return reviews;
-
     }
 
 
     public List<PerformanceReviewResponse> getReviewsByPerformance(Long performanceId,
                                                                    Long memberId) {
 
-        List<PerformanceReviewResponse> reviews =
-                reviewRepository.findReviewsByPerformance(performanceId, memberId);
-
-        if (memberId != null) {
-            applyLiked(reviews, memberId);
-        }
-
-        return reviews;
+        return reviewRepository.findReviewsByPerformance(performanceId, memberId);
 
     }
 
@@ -140,9 +129,8 @@ public class PerformanceReviewService {
     public void deleteReview(Long memberId,
                              Long reviewId) {
 
-        PerformanceReview review = reviewRepository
-                .findByIdAndPerformanceRecord_Member_Id(reviewId, memberId)
-                        .orElseThrow(() -> new CustomException(ErrorCode.PERFORMANCE_REVIEW_NOT_FOUND));
+        PerformanceReview review = reviewRepository.findByIdAndPerformanceRecord_Member_Id(reviewId, memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PERFORMANCE_REVIEW_NOT_FOUND));
 
         reviewRepository.delete(review);
 
@@ -153,10 +141,8 @@ public class PerformanceReviewService {
 
         PerformanceReviewResponse response = reviewMapper.toPerformanceReviewResponse(review);
 
-        response.updateCounts(
-                likeRepository.countByPerformanceReview_Id(review.getId()),
-                commentRepository.countByPerformanceReview_IdAndDeletedFalse(review.getId())
-        );
+        response.updateCounts(likeRepository.countByPerformanceReview_Id(review.getId()),
+                commentRepository.countByPerformanceReview_IdAndDeletedFalse(review.getId()));
 
         response.setLiked(false);
 
@@ -169,6 +155,13 @@ public class PerformanceReviewService {
                                                        Long memberId) {
 
         PerformanceReviewResponse response = toReviewResponse(review);
+
+        response.setOwner(
+                review.getPerformanceRecord()
+                        .getMember()
+                        .getId()
+                        .equals(memberId)
+        );
 
         response.setLiked(likeRepository.existsByMember_IdAndPerformanceReview_Id(memberId, review.getId()));
 
@@ -187,9 +180,7 @@ public class PerformanceReviewService {
         Set<Long> likedReviewIds = likeRepository.findLikedReviewIds(memberId);
 
         reviews.forEach(review ->
-                review.setLiked(
-                        likedReviewIds.contains(review.getId())
-                )
+                review.setLiked(likedReviewIds.contains(review.getId()))
         );
 
     }
