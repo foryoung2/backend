@@ -24,8 +24,8 @@ public class PerformanceRecordController {
 
 
     @PostMapping
-    public ResponseEntity<Void> createRecord(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                             @Valid @RequestBody PerformanceRecordCreateRequest request) {
+    public ResponseEntity<PerformanceRecordResponse> createRecord(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                  @Valid @RequestBody PerformanceRecordCreateRequest request) {
 
         recordService.createRecord(userDetails.getMemberId(), request);
 

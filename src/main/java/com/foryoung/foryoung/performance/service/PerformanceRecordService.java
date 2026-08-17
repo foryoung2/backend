@@ -7,6 +7,7 @@ import com.foryoung.foryoung.member.service.MemberService;
 import com.foryoung.foryoung.performance.dto.PerformanceRecordCreateRequest;
 import com.foryoung.foryoung.performance.dto.PerformanceRecordResponse;
 import com.foryoung.foryoung.performance.dto.PerformanceRecordUpdateRequest;
+import com.foryoung.foryoung.performance.entity.Performance;
 import com.foryoung.foryoung.performance.entity.PerformanceRecord;
 import com.foryoung.foryoung.performance.entity.PerformanceSchedule;
 import com.foryoung.foryoung.performance.mapper.PerformanceRecordMapper;
@@ -33,8 +34,8 @@ public class PerformanceRecordService {
 
 
     @Transactional
-    public void createRecord(Long memberId,
-                             PerformanceRecordCreateRequest request) {
+    public PerformanceRecordResponse createRecord(Long memberId,
+                                                  PerformanceRecordCreateRequest request) {
 
         Member member = memberService.findMemberById(memberId);
 
@@ -49,7 +50,21 @@ public class PerformanceRecordService {
                 .seat(request.getSeat())
                 .build();
 
-        recordRepository.save(record);
+        PerformanceRecord savedRecord = recordRepository.save(record);
+
+        Performance performance = schedule.getPerformance();
+
+        return PerformanceRecordResponse.builder()
+                .id(savedRecord.getId())
+                .performanceId(performance.getId())
+                .performanceTitle(performance.getTitle())
+                .artist(performance.getArtist())
+                .venue(performance.getVenue().getName())
+                .scheduleId(schedule.getId())
+                .performanceDateTime(schedule.getPerformanceDateTime())
+                .ticketPrice(savedRecord.getTicketPrice())
+                .seat(savedRecord.getSeat())
+                .build();
 
     }
 
