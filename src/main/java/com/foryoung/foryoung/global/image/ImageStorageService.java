@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.venue.service;
+package com.foryoung.foryoung.global.image;
 
 import com.foryoung.foryoung.global.exception.CustomException;
 import com.foryoung.foryoung.global.exception.ErrorCode;
@@ -28,14 +28,18 @@ public class ImageStorageService {
                     "image/webp"
             );
 
-    private final Path uploadPath = Paths.get("uploads/venue-views");
+    private final Path uploadRoot = Paths.get("uploads");
 
 
-    public String saveImage(MultipartFile image) {
+    public String saveImage(MultipartFile image,
+                            ImageType imageType) {
 
         validateImage(image);
 
+        Path uploadPath = uploadRoot.resolve(imageType.getDirectory());
+
         try {
+
             Files.createDirectories(uploadPath);
 
             String extension = getExtension(image.getOriginalFilename());
@@ -44,21 +48,13 @@ public class ImageStorageService {
 
             Path filePath = uploadPath.resolve(fileName);
 
-            Files.copy(
-                    image.getInputStream(),
-                    filePath,
-                    StandardCopyOption.REPLACE_EXISTING
-            );
+            Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            return "/images/venue-views/" + fileName;
+            return "/images/" + imageType.getDirectory() + "/" + fileName;
 
         } catch (IOException e) {
 
-            log.error(
-                    "Failed to save image. filename={}",
-                    image.getOriginalFilename(),
-                    e
-            );
+            log.error("Failed to save image. filename={}", image.getOriginalFilename(), e);
 
             throw new CustomException(ErrorCode.IMAGE_SAVE_FAILED);
         }
@@ -66,7 +62,8 @@ public class ImageStorageService {
     }
 
 
-    public void deleteImage(String imageUrl) {
+    public void deleteImage(String imageUrl,
+                            ImageType imageType) {
 
         if (imageUrl == null || imageUrl.isBlank()) {
             return;
@@ -74,18 +71,17 @@ public class ImageStorageService {
 
         String fileName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
 
-        Path filePath = uploadPath.resolve(fileName);
+        Path filePath = uploadRoot
+                .resolve(imageType.getDirectory())
+                .resolve(fileName);
 
         try {
+
             Files.deleteIfExists(filePath);
 
         } catch (IOException e) {
 
-            log.error(
-                    "Failed to delete image. imageUrl={}",
-                    imageUrl,
-                    e
-            );
+            log.error("Failed to delete image. imageUrl={}", imageUrl, e);
 
             throw new CustomException(ErrorCode.IMAGE_DELETE_FAILED);
         }
@@ -118,8 +114,9 @@ public class ImageStorageService {
             return "";
         }
 
-        return filename.substring(filename.lastIndexOf(".")).toLowerCase();
-
+        return filename
+                .substring(filename.lastIndexOf("."))
+                .toLowerCase();
     }
 
 
