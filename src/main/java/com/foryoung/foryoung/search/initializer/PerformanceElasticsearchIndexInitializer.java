@@ -51,13 +51,17 @@ public class ElasticsearchIndexInitializer {
 
         } catch (Exception e) {
 
-            log.error("Elasticsearch index initialization failed. index={}", INDEX_NAME, e);
+            log.error(
+                    "Elasticsearch index initialization failed. index={}",
+                    INDEX_NAME,
+                    e
+            );
 
             throw new ElasticsearchInitializationException(
-                    "Failed to initialize Elasticsearch index: " + INDEX_NAME, e
+                    "Failed to initialize Elasticsearch index: " + INDEX_NAME,
+                    e
             );
         }
-
     }
 
 
@@ -74,11 +78,13 @@ public class ElasticsearchIndexInitializer {
 
         } catch (Exception e) {
 
-            log.error("Failed to create Elasticsearch index. index={}", INDEX_NAME, e);
-
-            throw new ElasticsearchInitializationException(
-                    "Failed to create Elasticsearch index", e
+            log.error(
+                    "Failed to create Elasticsearch index. index={}",
+                    INDEX_NAME,
+                    e
             );
+
+            throw new ElasticsearchInitializationException("Failed to create Elasticsearch index", e);
         }
 
     }
@@ -87,6 +93,7 @@ public class ElasticsearchIndexInitializer {
     private IndexSettings.Builder configureSettings(IndexSettings.Builder settings) {
 
         return settings
+
                 .index(index -> index
                         .maxNgramDiff(18)
                 )
@@ -125,10 +132,7 @@ public class ElasticsearchIndexInitializer {
                                         .custom(custom -> custom
                                                 .charFilter("remove_spaces")
                                                 .tokenizer("standard")
-                                                .filter(
-                                                        "lowercase",
-                                                        "performance_ngram"
-                                                )
+                                                .filter("lowercase", "performance_ngram")
                                         )
                         )
 
@@ -175,17 +179,12 @@ public class ElasticsearchIndexInitializer {
                 )
 
                 .properties(
-                        "venue",
-                        property -> property
-                                .keyword(keyword -> keyword)
-                )
-
-                .properties(
                         "posterImageUrl",
                         property -> property
                                 .keyword(keyword -> keyword)
                 );
 
     }
+
 
 }
