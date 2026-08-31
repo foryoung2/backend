@@ -17,6 +17,8 @@ public class PerformanceDetailResponse {
 
     private String artist;
 
+    private Long venueId;
+
     private String venue;
 
     private String posterImageUrl;
@@ -31,6 +33,7 @@ public class PerformanceDetailResponse {
                 .id(performance.getId())
                 .title(performance.getTitle())
                 .artist(performance.getArtist())
+                .venueId(performance.getVenue().getId())
                 .venue(performance.getVenue().getName())
                 .posterImageUrl(performance.getPosterImageUrl())
                 .schedules(schedules)
