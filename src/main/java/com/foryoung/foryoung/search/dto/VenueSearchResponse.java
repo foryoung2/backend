@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.venue.dto;
+package com.foryoung.foryoung.search.dto;
 
 import com.foryoung.foryoung.venue.entity.Venue;
 import lombok.Builder;
