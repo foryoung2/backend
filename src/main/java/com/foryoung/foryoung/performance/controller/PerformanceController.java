@@ -1,5 +1,6 @@
 package com.foryoung.foryoung.performance.controller;
 
+import com.foryoung.foryoung.global.pagination.PageResponse;
 import com.foryoung.foryoung.performance.dto.PerformanceCreateRequest;
 import com.foryoung.foryoung.performance.dto.PerformanceDetailResponse;
 import com.foryoung.foryoung.performance.dto.PerformanceResponse;
@@ -11,22 +12,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/performances")
 public class PerformanceController {
 
-
     private final PerformanceService performanceService;
 
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PerformanceResponse> createPerformance(@Valid @RequestPart("request") PerformanceCreateRequest request,
+                                                                 @RequestPart(value = "posterImage", required = false) MultipartFile posterImage) {
 
-    @PostMapping
-    public ResponseEntity<PerformanceResponse> createPerformance(@Valid @RequestBody PerformanceCreateRequest request) {
-
-        PerformanceResponse performanceResponse = performanceService.createPerformance(request);
+        PerformanceResponse performanceResponse = performanceService.createPerformance(request, posterImage);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -36,12 +38,12 @@ public class PerformanceController {
 
 
     @GetMapping
-    public ResponseEntity<Page<PerformanceResponse>> getPerformances(@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC)
-                                                                         Pageable pageable) {
+    public ResponseEntity<PageResponse<PerformanceResponse>> getPerformances(@PageableDefault(size = 12, sort = "id", direction = Sort.Direction.DESC)
+                                                                                 Pageable pageable) {
 
-        return ResponseEntity.ok(
-                performanceService.getPerformances(pageable)
-        );
+        Page<PerformanceResponse> response = performanceService.getPerformances(pageable);
+
+        return ResponseEntity.ok(PageResponse.from(response));
 
     }
 

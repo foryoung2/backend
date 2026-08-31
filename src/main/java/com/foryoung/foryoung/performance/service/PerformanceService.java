@@ -2,6 +2,8 @@ package com.foryoung.foryoung.performance.service;
 
 import com.foryoung.foryoung.global.exception.CustomException;
 import com.foryoung.foryoung.global.exception.ErrorCode;
+import com.foryoung.foryoung.global.image.ImageStorageService;
+import com.foryoung.foryoung.global.image.ImageType;
 import com.foryoung.foryoung.performance.dto.PerformanceCreateRequest;
 import com.foryoung.foryoung.performance.dto.PerformanceDetailResponse;
 import com.foryoung.foryoung.performance.dto.PerformanceResponse;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,19 +39,29 @@ public class PerformanceService {
 
     private final PerformanceMapper performanceMapper;
     private final PerformanceSearchMapper searchMapper;
+    private final ImageStorageService imageStorageService;
 
 
     @Transactional
-    public PerformanceResponse createPerformance(PerformanceCreateRequest request) {
+    public PerformanceResponse createPerformance(PerformanceCreateRequest request,
+                                                 MultipartFile posterImage) {
 
         Venue venue = venueRepository.findById(request.getVenueId())
                 .orElseThrow(() -> new CustomException(ErrorCode.VENUE_NOT_FOUND));
+
+        String posterImageUrl = null;
+
+        if(posterImage != null && !posterImage.isEmpty()) {
+
+            posterImageUrl =
+                    imageStorageService.saveImage(posterImage, ImageType.PERFORMANCE_POSTER);
+        }
 
         Performance performance = Performance.builder()
                 .title(request.getTitle())
                 .artist(request.getArtist())
                 .venue(venue)
-                .posterImageUrl(request.getPosterImageUrl())
+                .posterImageUrl(posterImageUrl)
                 .build();
 
         Performance savedPerformance = performanceRepository.save(performance);
@@ -64,10 +77,9 @@ public class PerformanceService {
 
     public Page<PerformanceResponse> getPerformances(Pageable pageable) {
 
-        return performanceRepository
-                .findAll(pageable)
+        return performanceRepository.findAll(pageable)
                 .map(performanceMapper::toPerformanceResponse);
-        
+
     }
 
 
@@ -82,14 +94,7 @@ public class PerformanceService {
                 .map(PerformanceScheduleResponse::from)
                 .toList();
 
-        return PerformanceDetailResponse.builder()
-                .id(performance.getId())
-                .title(performance.getTitle())
-                .artist(performance.getArtist())
-                .venue(performance.getVenue().getName())
-                .posterImageUrl(performance.getPosterImageUrl())
-                .schedules(schedules)
-                .build();
+        return PerformanceDetailResponse.from(performance, schedules);
 
     }
 
