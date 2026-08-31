@@ -12,6 +12,11 @@ public interface VenueSeatViewMapper {
 
     @Mapping(target = "venueId", source = "venue.id")
     @Mapping(target = "venueName", source = "venue.name")
+    @Mapping(
+            target = "writerNickname",
+            expression = "java(venueSeatView.getMember().getDisplayNickname())"
+    )
+    @Mapping(target = "owner", ignore = true)
     @Mapping(target = "imageUrls", source = "images")
     VenueSeatViewResponse toVenueSeatViewResponse(VenueSeatView venueSeatView);
 
