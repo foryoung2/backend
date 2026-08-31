@@ -14,7 +14,7 @@ import jakarta.annotation.PostConstruct;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ElasticsearchIndexInitializer {
+public class PerformanceElasticsearchIndexInitializer {
 
 
     private static final String INDEX_NAME = "performances";
