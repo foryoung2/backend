@@ -23,6 +23,9 @@ public class ReviewCommentResponse {
 
     private LocalDateTime createdAt;
 
+    private boolean owner;
+
+
     @Builder.Default
     private List<ReviewCommentResponse> replies = new ArrayList<>();
 

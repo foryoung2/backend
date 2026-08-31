@@ -51,7 +51,7 @@ public class ReviewCommentService {
 
         ReviewComment savedComment = commentRepository.save(comment);
 
-        return commentMapper.toReviewCommentResponse(savedComment);
+        return commentMapper.toReviewCommentResponse(savedComment, memberId);
 
     }
 
@@ -82,9 +82,9 @@ public class ReviewCommentService {
                 .content(request.getContent())
                 .build();
 
-        commentRepository.save(reply);
+        ReviewComment savedReply = commentRepository.save(reply);
 
-        return commentMapper.toReviewCommentResponse(reply);
+        return commentMapper.toReviewCommentResponse(savedReply, memberId);
 
     }
 
@@ -99,17 +99,18 @@ public class ReviewCommentService {
 
         comment.updateComment(request.getContent());
 
-        return commentMapper.toReviewCommentResponse(comment);
+        return commentMapper.toReviewCommentResponse(comment, memberId);
 
     }
 
 
-    public List<ReviewCommentResponse> getComments(Long reviewId) {
+    public List<ReviewCommentResponse> getComments(Long reviewId,
+                                                   Long memberId) {
 
         List<ReviewComment> comments =
                 commentRepository.findByReviewIdWithMemberAndParent(reviewId);
 
-        return buildCommentTree(comments);
+        return buildCommentTree(comments, memberId);
 
     }
 
@@ -141,14 +142,15 @@ public class ReviewCommentService {
     }
 
 
-    private List<ReviewCommentResponse> buildCommentTree(List<ReviewComment> comments) {
+    private List<ReviewCommentResponse> buildCommentTree(List<ReviewComment> comments,
+                                                         Long memberId) {
 
         Map<Long,ReviewCommentResponse> responseMap = new HashMap<>();
         List<ReviewCommentResponse> roots = new ArrayList<>();
 
         for (ReviewComment comment : comments) {
 
-            ReviewCommentResponse response = commentMapper.toReviewCommentResponse(comment);
+            ReviewCommentResponse response = commentMapper.toReviewCommentResponse(comment, memberId);
             response.initializeReplies();
 
             responseMap.put(comment.getId(), response);
