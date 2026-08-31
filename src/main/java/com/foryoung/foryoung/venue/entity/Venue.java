@@ -18,7 +18,5 @@ public class Venue {
     @Column(nullable = false, unique = true)
     private String name;
 
-    private String address;
-
 
 }
