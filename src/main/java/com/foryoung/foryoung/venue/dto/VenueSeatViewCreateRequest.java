@@ -1,7 +1,6 @@
 package com.foryoung.foryoung.venue.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,14 +10,11 @@ import lombok.NoArgsConstructor;
 public class VenueSeatViewCreateRequest {
 
 
-    @NotNull(message = "Venue id must not be null")
-    private Long venueId;
-
     @NotBlank(message = "Seat information must not be blank")
     private String seatInfo;
 
     @Size(max = 1000, message = "Description must not exceed 1000 characters")
-    private String description;
+    private String content;
 
 
 }

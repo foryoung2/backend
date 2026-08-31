@@ -40,7 +40,7 @@ public class VenueSeatView {
     private String seatInfo;
 
     @Column(length = 1000)
-    private String description;
+    private String content;
 
 
     public void addImage(String imageUrl, int displayOrder) {

@@ -16,9 +16,13 @@ public class VenueSeatViewResponse {
 
     private String venueName;
 
+    private String writerNickname;
+
+    private boolean owner;
+
     private String seatInfo;
 
-    private String description;
+    private String content;
 
     private List<String> imageUrls;
 
