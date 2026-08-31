@@ -18,7 +18,5 @@ public class PerformanceCreateRequest {
 
     private String artist;
 
-    private String posterImageUrl;
-
 
 }
