@@ -1,6 +1,7 @@
 package com.foryoung.foryoung.venue.controller;
 
 import com.foryoung.foryoung.auth.userdetails.CustomUserDetails;
+import com.foryoung.foryoung.global.pagination.PageResponse;
 import com.foryoung.foryoung.venue.dto.VenueSeatViewCreateRequest;
 import com.foryoung.foryoung.venue.dto.VenueSeatViewResponse;
 import com.foryoung.foryoung.venue.service.VenueSeatViewService;
@@ -20,19 +21,23 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/venue-views")
+@RequestMapping("/venues")
 public class VenueSeatViewController {
-
 
     private final VenueSeatViewService seatViewService;
 
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(
+            value = "/{venueId}/seat-views",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     public ResponseEntity<VenueSeatViewResponse> createVenueSeatView(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                     @PathVariable Long venueId,
                                                                      @Valid @RequestPart("data") VenueSeatViewCreateRequest request,
                                                                      @RequestPart("images") List<MultipartFile> images) {
 
-        VenueSeatViewResponse response = seatViewService.createVenueSeatView(userDetails.getMemberId(), request, images);
+        VenueSeatViewResponse response =
+                seatViewService.createVenueSeatView(userDetails.getMemberId(), venueId, request, images);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -41,37 +46,50 @@ public class VenueSeatViewController {
     }
 
 
-    @GetMapping("/{venueViewId}")
-    public ResponseEntity<VenueSeatViewResponse> getVenueSeatView(@PathVariable Long venueViewId) {
+    @GetMapping("/seat-views/{venueViewId}")
+    public ResponseEntity<VenueSeatViewResponse> getVenueSeatView(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                  @PathVariable Long venueViewId) {
 
-        return ResponseEntity.ok(seatViewService.getVenueSeatView(venueViewId));
+        Long memberId = userDetails != null
+                ? userDetails.getMemberId()
+                : null;
 
-    }
-
-
-    @GetMapping("/{venueId}/views")
-    public ResponseEntity<Page<VenueSeatViewResponse>> getVenueSeatViews(@PathVariable Long venueId,
-                                                                         @PageableDefault(size = 20) Pageable pageable) {
-
-        Page<VenueSeatViewResponse> response = seatViewService.getVenueSeatViews(venueId, pageable);
+        VenueSeatViewResponse response = seatViewService.getVenueSeatView(venueViewId, memberId);
 
         return ResponseEntity.ok(response);
 
     }
 
 
-    @GetMapping("/my")
-    public ResponseEntity<Page<VenueSeatViewResponse>> getMyVenueSeatViews(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                                           @PageableDefault(size = 10) Pageable pageable) {
+    @GetMapping("/{venueId}/seat-views")
+    public ResponseEntity<PageResponse<VenueSeatViewResponse>> getVenueSeatViews(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                                 @PathVariable Long venueId,
+                                                                                 @PageableDefault(size = 12) Pageable pageable) {
 
-        Page<VenueSeatViewResponse> response = seatViewService.getMyVenueSeatViews(userDetails.getMemberId(), pageable);
+        Long memberId = userDetails != null
+                ? userDetails.getMemberId()
+                : null;
 
-        return ResponseEntity.ok(response);
+        Page<VenueSeatViewResponse> response = seatViewService.getVenueSeatViews(venueId, memberId, pageable);
+
+        return ResponseEntity.ok(PageResponse.from(response));
 
     }
 
 
-    @DeleteMapping("/{venueViewId}")
+    @GetMapping("/seat-views/me")
+    public ResponseEntity<PageResponse<VenueSeatViewResponse>> getMyVenueSeatViews(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                                   @PageableDefault(size = 12) Pageable pageable) {
+
+        Page<VenueSeatViewResponse> response =
+                seatViewService.getMyVenueSeatViews(userDetails.getMemberId(), pageable);
+
+        return ResponseEntity.ok(PageResponse.from(response));
+
+    }
+
+
+    @DeleteMapping("/seat-views/{venueViewId}")
     public ResponseEntity<Void> deleteVenueSeatView(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                     @PathVariable Long venueViewId) {
 
