@@ -12,10 +12,10 @@ import com.foryoung.foryoung.review.mapper.ReviewLikeMapper;
 import com.foryoung.foryoung.review.repository.PerformanceReviewRepository;
 import com.foryoung.foryoung.review.repository.ReviewLikeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -75,13 +75,12 @@ public class ReviewLikeService {
 
     }
 
-    public List<LikedReviewResponse> getLikedReviews(Long memberId) {
+    public Page<LikedReviewResponse> getLikedReviews(Long memberId,
+                                                     Pageable pageable) {
 
         return reviewLikeRepository
-                .findLikedReviews(memberId)
-                .stream()
-                .map(reviewLikeMapper::toLikedReviewResponse)
-                .toList();
+                .findLikedReviews(memberId, pageable)
+                .map(reviewLikeMapper::toLikedReviewResponse);
 
     }
 

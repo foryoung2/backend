@@ -14,10 +14,10 @@ import com.foryoung.foryoung.performance.mapper.PerformanceRecordMapper;
 import com.foryoung.foryoung.performance.repository.PerformanceRecordRepository;
 import com.foryoung.foryoung.performance.repository.PerformanceScheduleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -81,13 +81,12 @@ public class PerformanceRecordService {
     }
 
 
-    public List<PerformanceRecordResponse> getMyRecords(Long memberId) {
+    public Page<PerformanceRecordResponse> getMyRecords(Long memberId,
+                                                        Pageable pageable) {
 
         return recordRepository
-                .findByMember_IdOrderBySchedule_PerformanceDateTimeDesc(memberId)
-                .stream()
-                .map(recordMapper::toPerformanceRecordResponse)
-                .toList();
+                .findByMember_IdOrderBySchedule_PerformanceDateTimeDesc(memberId, pageable)
+                .map(recordMapper::toPerformanceRecordResponse);
 
     }
 

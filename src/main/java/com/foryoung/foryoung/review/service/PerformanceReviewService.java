@@ -13,6 +13,8 @@ import com.foryoung.foryoung.review.repository.PerformanceReviewRepository;
 import com.foryoung.foryoung.review.repository.ReviewCommentRepository;
 import com.foryoung.foryoung.review.repository.ReviewLikeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,27 +102,36 @@ public class PerformanceReviewService {
     }
 
 
-    public List<PerformanceReviewResponse> getReviews(Long memberId) {
+    public Page<PerformanceReviewResponse> getReviews(Long memberId,
+                                                      Pageable pageable) {
 
-        return reviewRepository.findReviews(memberId);
+        Page<PerformanceReviewResponse> reviews = reviewRepository.findReviews(memberId, pageable);
+        applyLiked(reviews.getContent(), memberId);
+
+        return reviews;
 
     }
 
 
-    public List<PerformanceReviewResponse> getMyReviews(Long memberId) {
+    public Page<PerformanceReviewResponse> getMyReviews(Long memberId,
+                                                        Pageable pageable) {
 
-        List<PerformanceReviewResponse> reviews = reviewRepository.findMyReviewsWithCount(memberId);
+        Page<PerformanceReviewResponse> reviews = reviewRepository.findMyReviewsWithCount(memberId, pageable);
 
-        applyLiked(reviews, memberId);
+        applyLiked(reviews.getContent(), memberId);
 
         return reviews;
     }
 
 
-    public List<PerformanceReviewResponse> getReviewsByPerformance(Long performanceId,
-                                                                   Long memberId) {
+    public Page<PerformanceReviewResponse> getReviewsByPerformance(Long performanceId,
+                                                                   Long memberId,
+                                                                   Pageable pageable) {
 
-        return reviewRepository.findReviewsByPerformance(performanceId, memberId);
+        Page<PerformanceReviewResponse> reviews = reviewRepository.findReviewsByPerformance(performanceId, memberId, pageable);
+        applyLiked(reviews.getContent(), memberId);
+
+        return reviews;
 
     }
 

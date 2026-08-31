@@ -59,9 +59,13 @@ public class ReviewCommentController {
 
 
     @GetMapping("/{reviewId}")
-    public ResponseEntity<List<ReviewCommentResponse>> getComments(@PathVariable Long reviewId) {
+    public ResponseEntity<List<ReviewCommentResponse>> getComments(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                   @PathVariable Long reviewId) {
 
-        return ResponseEntity.ok(commentService.getComments(reviewId));
+        Long memberId = userDetails != null
+                ? userDetails.getMemberId()
+                : null;
+        return ResponseEntity.ok(commentService.getComments(reviewId, memberId));
 
     }
 

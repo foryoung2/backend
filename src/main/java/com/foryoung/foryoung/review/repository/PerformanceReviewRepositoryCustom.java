@@ -1,21 +1,28 @@
 package com.foryoung.foryoung.review.repository;
 
 import com.foryoung.foryoung.review.dto.PerformanceReviewResponse;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface PerformanceReviewRepositoryCustom {
 
 
-    List<PerformanceReviewResponse> findReviews(Long memberId);
+    Page<PerformanceReviewResponse> findReviews(
+            Long memberId,
+            Pageable pageable
+    );
 
 
-    List<PerformanceReviewResponse> findMyReviewsWithCount(Long memberId);
+    Page<PerformanceReviewResponse> findMyReviewsWithCount(
+            Long memberId,
+            Pageable pageable
+    );
 
 
-    List<PerformanceReviewResponse> findReviewsByPerformance(
+    Page<PerformanceReviewResponse> findReviewsByPerformance(
             Long performanceId,
-            Long memberId
+            Long memberId,
+            Pageable pageable
     );
 
 

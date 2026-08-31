@@ -1,15 +1,18 @@
 package com.foryoung.foryoung.review.controller;
 
 import com.foryoung.foryoung.auth.userdetails.CustomUserDetails;
+import com.foryoung.foryoung.global.pagination.PageResponse;
 import com.foryoung.foryoung.review.dto.LikedReviewResponse;
 import com.foryoung.foryoung.review.dto.ReviewLikeResponse;
 import com.foryoung.foryoung.review.service.ReviewLikeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,9 +42,14 @@ public class ReviewLikeController {
 
 
     @GetMapping("/liked")
-    public ResponseEntity<List<LikedReviewResponse>> getLikedReviews(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<PageResponse<LikedReviewResponse>> getLikedReviews(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                             @PageableDefault(size = 12, sort = "createdAt", direction = Sort.Direction.DESC)
+                                                                             Pageable pageable) {
 
-        return ResponseEntity.ok(reviewLikeService.getLikedReviews(userDetails.getMemberId()));
+        Page<LikedReviewResponse> response =
+                reviewLikeService.getLikedReviews(userDetails.getMemberId(), pageable);
+
+        return ResponseEntity.ok(PageResponse.from(response));
 
     }
 

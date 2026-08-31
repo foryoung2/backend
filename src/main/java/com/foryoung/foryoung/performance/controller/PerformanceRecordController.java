@@ -1,18 +1,21 @@
 package com.foryoung.foryoung.performance.controller;
 
 import com.foryoung.foryoung.auth.userdetails.CustomUserDetails;
+import com.foryoung.foryoung.global.pagination.PageResponse;
 import com.foryoung.foryoung.performance.dto.PerformanceRecordCreateRequest;
 import com.foryoung.foryoung.performance.dto.PerformanceRecordResponse;
 import com.foryoung.foryoung.performance.dto.PerformanceRecordUpdateRequest;
 import com.foryoung.foryoung.performance.service.PerformanceRecordService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,11 +52,14 @@ public class PerformanceRecordController {
 
 
     @GetMapping("/me")
-    public ResponseEntity<List<PerformanceRecordResponse>> getMyRecords(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<PageResponse<PerformanceRecordResponse>> getMyRecords(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                                @PageableDefault(size = 12, sort = "schedule.performanceDateTime", direction = Sort.Direction.DESC)
+                                                                                Pageable pageable) {
 
-        List<PerformanceRecordResponse> records = recordService.getMyRecords(userDetails.getMemberId());
+        Page<PerformanceRecordResponse> responses =
+                recordService.getMyRecords(userDetails.getMemberId(), pageable);
 
-        return ResponseEntity.ok(records);
+        return ResponseEntity.ok(PageResponse.from(responses));
 
     }
 
