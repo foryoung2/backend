@@ -1,0 +1,130 @@
+package com.foryoung.foryoung.performance.service;
+
+import com.foryoung.foryoung.global.exception.CustomException;
+import com.foryoung.foryoung.global.exception.ErrorCode;
+import com.foryoung.foryoung.member.entity.Member;
+import com.foryoung.foryoung.member.service.MemberService;
+import com.foryoung.foryoung.performance.record.dto.PerformanceRecordCreateRequest;
+import com.foryoung.foryoung.performance.record.dto.PerformanceRecordResponse;
+import com.foryoung.foryoung.performance.record.dto.PerformanceRecordUpdateRequest;
+import com.foryoung.foryoung.performance.performance.entity.Performance;
+import com.foryoung.foryoung.performance.record.entity.PerformanceRecord;
+import com.foryoung.foryoung.performance.schedule.entity.PerformanceSchedule;
+import com.foryoung.foryoung.performance.record.mapper.PerformanceRecordMapper;
+import com.foryoung.foryoung.performance.record.repository.PerformanceRecordRepository;
+import com.foryoung.foryoung.performance.schedule.repository.PerformanceScheduleRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class PerformanceRecordService {
+
+
+    private final MemberService memberService;
+
+    private final PerformanceScheduleRepository scheduleRepository;
+    private final PerformanceRecordRepository recordRepository;
+
+    private final PerformanceRecordMapper recordMapper;
+
+
+    @Transactional
+    public PerformanceRecordResponse createRecord(Long memberId,
+                                                  PerformanceRecordCreateRequest request) {
+
+        Member member = memberService.findMemberById(memberId);
+
+        PerformanceSchedule schedule =
+                scheduleRepository.findById(request.getScheduleId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.PERFORMANCE_SCHEDULE_NOT_FOUND));
+
+        PerformanceRecord record = PerformanceRecord.builder()
+                .member(member)
+                .schedule(schedule)
+                .ticketPrice(request.getTicketPrice())
+                .seat(request.getSeat())
+                .rating(request.getRating())
+                .build();
+
+        PerformanceRecord savedRecord = recordRepository.save(record);
+
+        Performance performance = schedule.getPerformance();
+
+        return PerformanceRecordResponse.builder()
+                .id(savedRecord.getId())
+                .performanceId(performance.getId())
+                .performanceTitle(performance.getTitle())
+                .artist(performance.getArtist())
+                .venue(performance.getVenue().getName())
+                .scheduleId(schedule.getId())
+                .performanceDateTime(schedule.getPerformanceDateTime())
+                .ticketPrice(savedRecord.getTicketPrice())
+                .seat(savedRecord.getSeat())
+                .build();
+
+    }
+
+
+    @Transactional
+    public void updateRecord(Long memberId,
+                             Long recordId,
+                             PerformanceRecordUpdateRequest request) {
+
+        PerformanceRecord record = findMyRecordEntity(memberId, recordId);
+
+        record.updateRecord(
+                request.getTicketPrice(),
+                request.getSeat(),
+                request.getRating()
+        );
+
+    }
+
+
+    public Page<PerformanceRecordResponse> getMyRecords(Long memberId,
+                                                        Pageable pageable) {
+
+        return recordRepository
+                .findByMember_IdOrderBySchedule_PerformanceDateTimeDesc(memberId, pageable)
+                .map(recordMapper::toPerformanceRecordResponse);
+
+    }
+
+
+    public PerformanceRecordResponse getMyRecord(Long memberId,
+                                                 Long recordId) {
+
+        PerformanceRecord record = findMyRecordEntity(memberId, recordId);
+
+        return recordMapper.toPerformanceRecordResponse(record);
+
+    }
+
+
+    @Transactional
+    public void deleteRecord(Long memberId,
+                             Long recordId) {
+
+        PerformanceRecord record = findMyRecordEntity(memberId, recordId);
+
+        recordRepository.delete(record);
+
+    }
+
+
+    private PerformanceRecord findMyRecordEntity(Long memberId,
+                                                 Long recordId) {
+
+        return recordRepository
+                .findByIdAndMember_Id(recordId, memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PERFORMANCE_RECORD_NOT_FOUND));
+
+    }
+
+
+}
