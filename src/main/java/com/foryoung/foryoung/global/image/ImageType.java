@@ -4,7 +4,8 @@ public enum ImageType {
 
 
     VENUE_VIEW("venue-views"),
-    PERFORMANCE_POSTER("performance-posters");
+    PERFORMANCE_POSTER("performance-posters"),
+    PERFORMANCE_REVIEW("performance-reviews");
 
     private final String directory;
 
