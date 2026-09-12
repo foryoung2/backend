@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.review.dto;
+package com.foryoung.foryoung.review.review.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

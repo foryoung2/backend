@@ -2,7 +2,7 @@ package com.foryoung.foryoung.statistics.controller;
 
 import com.foryoung.foryoung.auth.userdetails.CustomUserDetails;
 import com.foryoung.foryoung.statistics.dto.AttendanceCalendarResponse;
-import com.foryoung.foryoung.statistics.dto.PerformanceReportResponse;
+import com.foryoung.foryoung.statistics.dto.PerformanceStatisticsResponse;
 import com.foryoung.foryoung.statistics.service.PerformanceStatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,39 +17,39 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/performances/reports")
-public class PerformanceReportController {
+public class PerformanceStatisticsController {
 
 
     private final PerformanceStatisticsService reportService;
 
 
     @GetMapping("/monthly")
-    public ResponseEntity<PerformanceReportResponse> getMonthlyReport(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                                      @RequestParam int year,
-                                                                      @RequestParam int month) {
+    public ResponseEntity<PerformanceStatisticsResponse> getMonthlyPerformanceStatistics(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                                         @RequestParam int year,
+                                                                                         @RequestParam int month) {
 
         return ResponseEntity.ok(
-                reportService.getMonthlyPerformanceReport(userDetails.getMemberId(), year, month)
+                reportService.getMonthlyPerformanceStatistics(userDetails.getMemberId(), year, month)
         );
 
     }
 
 
     @GetMapping("/yearly")
-    public ResponseEntity<PerformanceReportResponse> getYearlyReport(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                                     @RequestParam int year) {
+    public ResponseEntity<PerformanceStatisticsResponse> getYearlyPerformanceStatistics(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                                        @RequestParam int year) {
 
         return ResponseEntity.ok(
-                reportService.getYearlyPerformanceReport(userDetails.getMemberId(), year)
+                reportService.getYearlyPerformanceStatistics(userDetails.getMemberId(), year)
         );
 
     }
 
 
     @GetMapping("/calendar")
-    public ResponseEntity<List<AttendanceCalendarResponse>> calendar(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                                     @RequestParam int year,
-                                                                     @RequestParam int month) {
+    public ResponseEntity<List<AttendanceCalendarResponse>> getAttendanceCalendar(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                                  @RequestParam int year,
+                                                                                  @RequestParam int month) {
 
         return ResponseEntity.ok(
                 reportService.getAttendanceCalendar(userDetails.getMemberId(), year, month)

@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.performance.repository;
+package com.foryoung.foryoung.performance.record.repository;
 
 import com.foryoung.foryoung.performance.record.entity.PerformanceRecord;
 import org.springframework.data.domain.Page;

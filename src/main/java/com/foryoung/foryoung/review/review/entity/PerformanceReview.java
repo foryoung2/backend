@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.review.entity;
+package com.foryoung.foryoung.review.review.entity;
 
 import com.foryoung.foryoung.performance.record.entity.PerformanceRecord;
 import com.foryoung.foryoung.review.comment.entity.ReviewComment;

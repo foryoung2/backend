@@ -1,19 +1,20 @@
-package com.foryoung.foryoung.performance.service;
+package com.foryoung.foryoung.performance.performance.service;
 
 import com.foryoung.foryoung.global.exception.CustomException;
 import com.foryoung.foryoung.global.exception.ErrorCode;
 import com.foryoung.foryoung.global.image.ImageStorageService;
 import com.foryoung.foryoung.global.image.ImageType;
-import com.foryoung.foryoung.member.service.MemberService;
-import com.foryoung.foryoung.performance.dto.*;
 import com.foryoung.foryoung.performance.performance.dto.PerformanceResponse;
 import com.foryoung.foryoung.performance.performance.entity.Performance;
 import com.foryoung.foryoung.performance.performance.mapper.PerformanceMapper;
 import com.foryoung.foryoung.performance.performance.dto.PerformanceCreateRequest;
 import com.foryoung.foryoung.performance.performance.dto.PerformanceDetailResponse;
-import com.foryoung.foryoung.performance.repository.PerformanceRecordRepository;
-import com.foryoung.foryoung.performance.repository.PerformanceRepository;
-import com.foryoung.foryoung.performance.repository.PerformanceScheduleRepository;
+import com.foryoung.foryoung.performance.record.repository.PerformanceRecordRepository;
+import com.foryoung.foryoung.performance.performance.repository.PerformanceRepository;
+import com.foryoung.foryoung.performance.schedule.repository.PerformanceScheduleRepository;
+import com.foryoung.foryoung.performance.schedule.dto.PerformanceScheduleResponse;
+import com.foryoung.foryoung.performance.setlist.dto.SetlistResponse;
+import com.foryoung.foryoung.performance.setlist.service.SetlistService;
 import com.foryoung.foryoung.search.document.PerformanceDocument;
 import com.foryoung.foryoung.search.mapper.PerformanceSearchMapper;
 import com.foryoung.foryoung.search.repository.PerformanceSearchRepository;
@@ -44,7 +45,7 @@ public class PerformanceService {
     private final PerformanceSearchMapper searchMapper;
 
     private final ImageStorageService imageStorageService;
-    private final MemberService memberService;
+    private final SetlistService setlistService;
 
 
     @Transactional
@@ -96,7 +97,10 @@ public class PerformanceService {
         List<PerformanceScheduleResponse> schedules = scheduleRepository
                 .findByPerformanceOrderByPerformanceDateTimeAsc(performance)
                 .stream()
-                .map(PerformanceScheduleResponse::from)
+                .map(schedule -> {
+                    List<SetlistResponse> setlists = setlistService.getSetlists(schedule.getId());
+                    return PerformanceScheduleResponse.from(schedule, setlists);
+                })
                 .toList();
 
         Double averageRating = recordRepository.findAverageRating(performanceId);

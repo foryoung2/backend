@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.review.dto;
+package com.foryoung.foryoung.review.like.dto;
 
 import lombok.Builder;
 import lombok.Getter;

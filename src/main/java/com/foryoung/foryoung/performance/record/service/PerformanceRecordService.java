@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.performance.service;
+package com.foryoung.foryoung.performance.record.service;
 
 import com.foryoung.foryoung.global.exception.CustomException;
 import com.foryoung.foryoung.global.exception.ErrorCode;

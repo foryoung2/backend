@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.review.repository;
+package com.foryoung.foryoung.review.like.repository;
 
 import com.foryoung.foryoung.review.like.entity.ReviewLike;
 import org.springframework.data.domain.Page;

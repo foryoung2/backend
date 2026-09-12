@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.review.repository;
+package com.foryoung.foryoung.review.review.repository;
 
 import com.foryoung.foryoung.review.review.dto.PerformanceReviewResponse;
 import org.springframework.data.domain.Page;

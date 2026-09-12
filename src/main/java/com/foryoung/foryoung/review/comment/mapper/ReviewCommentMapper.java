@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.review.mapper;
+package com.foryoung.foryoung.review.comment.mapper;
 
 import com.foryoung.foryoung.review.comment.dto.ReviewCommentResponse;
 import com.foryoung.foryoung.review.comment.entity.ReviewComment;

@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.review.repository;
+package com.foryoung.foryoung.review.review.repository;
 
 import com.foryoung.foryoung.review.review.entity.PerformanceReview;
 import org.springframework.data.jpa.repository.JpaRepository;

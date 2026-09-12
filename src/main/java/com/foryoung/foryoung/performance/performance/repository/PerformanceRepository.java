@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.performance.repository;
+package com.foryoung.foryoung.performance.performance.repository;
 
 import com.foryoung.foryoung.performance.performance.entity.Performance;
 import org.springframework.data.jpa.repository.JpaRepository;

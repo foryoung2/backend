@@ -1,18 +1,18 @@
-package com.foryoung.foryoung.review.service;
+package com.foryoung.foryoung.review.comment.service;
 
 import com.foryoung.foryoung.global.exception.CustomException;
 import com.foryoung.foryoung.global.exception.ErrorCode;
 import com.foryoung.foryoung.member.entity.Member;
 import com.foryoung.foryoung.member.service.MemberService;
-import com.foryoung.foryoung.review.dto.CommentCountResponse;
-import com.foryoung.foryoung.review.dto.CommentCreateRequest;
-import com.foryoung.foryoung.review.dto.CommentUpdateRequest;
-import com.foryoung.foryoung.review.dto.ReviewCommentResponse;
+import com.foryoung.foryoung.review.comment.dto.CommentCountResponse;
+import com.foryoung.foryoung.review.comment.dto.CommentCreateRequest;
+import com.foryoung.foryoung.review.comment.dto.CommentUpdateRequest;
+import com.foryoung.foryoung.review.comment.dto.ReviewCommentResponse;
 import com.foryoung.foryoung.review.review.entity.PerformanceReview;
 import com.foryoung.foryoung.review.comment.entity.ReviewComment;
-import com.foryoung.foryoung.review.mapper.ReviewCommentMapper;
-import com.foryoung.foryoung.review.repository.PerformanceReviewRepository;
-import com.foryoung.foryoung.review.repository.ReviewCommentRepository;
+import com.foryoung.foryoung.review.comment.mapper.ReviewCommentMapper;
+import com.foryoung.foryoung.review.review.repository.PerformanceReviewRepository;
+import com.foryoung.foryoung.review.comment.repository.ReviewCommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

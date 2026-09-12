@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.review.service;
+package com.foryoung.foryoung.review.like.service;
 
 import com.foryoung.foryoung.global.exception.CustomException;
 import com.foryoung.foryoung.global.exception.ErrorCode;
@@ -8,9 +8,9 @@ import com.foryoung.foryoung.review.like.dto.LikedReviewResponse;
 import com.foryoung.foryoung.review.like.dto.ReviewLikeResponse;
 import com.foryoung.foryoung.review.review.entity.PerformanceReview;
 import com.foryoung.foryoung.review.like.entity.ReviewLike;
-import com.foryoung.foryoung.review.mapper.ReviewLikeMapper;
-import com.foryoung.foryoung.review.repository.PerformanceReviewRepository;
-import com.foryoung.foryoung.review.repository.ReviewLikeRepository;
+import com.foryoung.foryoung.review.like.mapper.ReviewLikeMapper;
+import com.foryoung.foryoung.review.review.repository.PerformanceReviewRepository;
+import com.foryoung.foryoung.review.like.repository.ReviewLikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.performance.entity;
+package com.foryoung.foryoung.performance.schedule.entity;
 
 import com.foryoung.foryoung.performance.performance.entity.Performance;
 import jakarta.persistence.*;

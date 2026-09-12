@@ -1,11 +1,11 @@
-package com.foryoung.foryoung.review.controller;
+package com.foryoung.foryoung.review.review.controller;
 
 import com.foryoung.foryoung.auth.userdetails.CustomUserDetails;
 import com.foryoung.foryoung.global.pagination.PageResponse;
-import com.foryoung.foryoung.review.dto.PerformanceReviewCreateRequest;
-import com.foryoung.foryoung.review.dto.PerformanceReviewResponse;
-import com.foryoung.foryoung.review.dto.PerformanceReviewUpdateRequest;
-import com.foryoung.foryoung.review.service.PerformanceReviewService;
+import com.foryoung.foryoung.review.review.dto.PerformanceReviewCreateRequest;
+import com.foryoung.foryoung.review.review.dto.PerformanceReviewResponse;
+import com.foryoung.foryoung.review.review.dto.PerformanceReviewUpdateRequest;
+import com.foryoung.foryoung.review.review.service.PerformanceReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

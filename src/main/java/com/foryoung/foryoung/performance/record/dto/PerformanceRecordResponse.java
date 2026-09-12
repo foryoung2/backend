@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.performance.dto;
+package com.foryoung.foryoung.performance.record.dto;
 
 import lombok.Builder;
 import lombok.Getter;

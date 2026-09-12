@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.performance.dto;
+package com.foryoung.foryoung.performance.performance.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PerformanceReportSummary {
+public class PerformanceStatisticsSummary {
 
 
     private long attendanceCount;
@@ -17,9 +17,9 @@ public class PerformanceReportSummary {
     private Integer lowestTicketPrice;
 
 
-    public static PerformanceReportSummary empty() {
+    public static PerformanceStatisticsSummary empty() {
 
-        return new PerformanceReportSummary(
+        return new PerformanceStatisticsSummary(
                 0L, 0L, null, null
         );
 

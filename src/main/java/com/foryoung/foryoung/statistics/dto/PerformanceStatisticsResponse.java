@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class PerformanceReportResponse {
+public class PerformanceStatisticsResponse {
 
 
     private int year;

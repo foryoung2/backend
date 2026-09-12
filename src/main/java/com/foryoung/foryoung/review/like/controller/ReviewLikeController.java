@@ -1,10 +1,10 @@
-package com.foryoung.foryoung.review.controller;
+package com.foryoung.foryoung.review.like.controller;
 
 import com.foryoung.foryoung.auth.userdetails.CustomUserDetails;
 import com.foryoung.foryoung.global.pagination.PageResponse;
-import com.foryoung.foryoung.review.dto.LikedReviewResponse;
-import com.foryoung.foryoung.review.dto.ReviewLikeResponse;
-import com.foryoung.foryoung.review.service.ReviewLikeService;
+import com.foryoung.foryoung.review.like.dto.LikedReviewResponse;
+import com.foryoung.foryoung.review.like.dto.ReviewLikeResponse;
+import com.foryoung.foryoung.review.like.service.ReviewLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

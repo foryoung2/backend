@@ -15,15 +15,15 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class PerformanceReportService {
+public class PerformanceStatisticsService {
 
 
     private final PerformanceRecordRepository recordRepository;
 
 
-    public PerformanceReportResponse getMonthlyPerformanceReport(Long memberId,
-                                                                 int year,
-                                                                 int month) {
+    public PerformanceStatisticsResponse getMonthlyPerformanceStatistics(Long memberId,
+                                                                         int year,
+                                                                         int month) {
 
         YearMonth yearMonth = YearMonth.of(year, month);
 
@@ -36,10 +36,10 @@ public class PerformanceReportService {
                 .atDay(1)
                 .atStartOfDay();
 
-        PerformanceReportSummary summary =
+        PerformanceStatisticsSummary summary =
                 Optional.ofNullable(
                         recordRepository.findReportSummary(memberId, startTime, endTime)
-                ).orElseGet(PerformanceReportSummary::empty);
+                ).orElseGet(PerformanceStatisticsSummary::empty);
 
         List<FrequencyResult> performances =
                 recordRepository.findMostAttendedPerformances(memberId, startTime, endTime);
@@ -52,7 +52,8 @@ public class PerformanceReportService {
     }
 
 
-    public PerformanceReportResponse getYearlyPerformanceReport(Long memberId, int year) {
+    public PerformanceStatisticsResponse getYearlyPerformanceStatistics(Long memberId,
+                                                                        int year) {
 
         LocalDateTime startTime = LocalDate.of(year, 1, 1)
                         .atStartOfDay();
@@ -60,10 +61,10 @@ public class PerformanceReportService {
         LocalDateTime endTime = LocalDate.of(year + 1, 1, 1)
                         .atStartOfDay();
 
-        PerformanceReportSummary summary =
+        PerformanceStatisticsSummary summary =
                 Optional.ofNullable(
                         recordRepository.findReportSummary(memberId, startTime, endTime)
-                ).orElseGet(PerformanceReportSummary::empty);
+                ).orElseGet(PerformanceStatisticsSummary::empty);
 
         List<FrequencyResult> performances =
                 recordRepository.findMostAttendedPerformances(memberId, startTime, endTime);
@@ -96,17 +97,17 @@ public class PerformanceReportService {
     }
 
 
-    private PerformanceReportResponse createReport(int year,
-                                                   Integer month,
-                                                   PerformanceReportSummary summary,
-                                                   List<FrequencyResult> performances,
-                                                   List<FrequencyResult> venues) {
+    private PerformanceStatisticsResponse createReport(int year,
+                                                       Integer month,
+                                                       PerformanceStatisticsSummary summary,
+                                                       List<FrequencyResult> performances,
+                                                       List<FrequencyResult> venues) {
 
         MostFrequentResult mostAttendedPerformance = findMostFrequent(performances);
 
         MostFrequentResult mostVisitedVenue = findMostFrequent(venues);
 
-        return PerformanceReportResponse.builder()
+        return PerformanceStatisticsResponse.builder()
                 .year(year)
                 .month(month)
                 .attendanceCount(summary.getAttendanceCount())

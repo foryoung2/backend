@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.report.dto;
+package com.foryoung.foryoung.statistics.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

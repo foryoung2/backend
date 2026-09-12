@@ -1,8 +1,8 @@
-package com.foryoung.foryoung.performance.entity;
+package com.foryoung.foryoung.performance.record.entity;
 
 import com.foryoung.foryoung.member.entity.Member;
 import com.foryoung.foryoung.performance.schedule.entity.PerformanceSchedule;
-import com.foryoung.foryoung.review.entity.PerformanceReview;
+import com.foryoung.foryoung.review.review.entity.PerformanceReview;
 import jakarta.persistence.*;
 import lombok.*;
 

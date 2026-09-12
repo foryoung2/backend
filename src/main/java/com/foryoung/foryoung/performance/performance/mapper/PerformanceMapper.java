@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.performance.mapper;
+package com.foryoung.foryoung.performance.performance.mapper;
 
 import com.foryoung.foryoung.performance.performance.dto.PerformanceResponse;
 import com.foryoung.foryoung.performance.performance.entity.Performance;

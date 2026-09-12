@@ -1,13 +1,13 @@
-package com.foryoung.foryoung.review.repository;
+package com.foryoung.foryoung.review.review.repository;
 
 import com.foryoung.foryoung.member.entity.MemberStatus;
-import com.foryoung.foryoung.performance.entity.QPerformance;
-import com.foryoung.foryoung.performance.entity.QPerformanceRecord;
-import com.foryoung.foryoung.performance.entity.QPerformanceSchedule;
+import com.foryoung.foryoung.performance.performance.entity.QPerformance;
+import com.foryoung.foryoung.performance.record.entity.QPerformanceRecord;
+import com.foryoung.foryoung.performance.schedule.entity.QPerformanceSchedule;
 import com.foryoung.foryoung.review.review.dto.PerformanceReviewResponse;
-import com.foryoung.foryoung.review.entity.QPerformanceReview;
-import com.foryoung.foryoung.review.entity.QReviewComment;
-import com.foryoung.foryoung.review.entity.QReviewLike;
+import com.foryoung.foryoung.review.review.entity.QPerformanceReview;
+import com.foryoung.foryoung.review.comment.entity.QReviewComment;
+import com.foryoung.foryoung.review.like.entity.QReviewLike;
 
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;

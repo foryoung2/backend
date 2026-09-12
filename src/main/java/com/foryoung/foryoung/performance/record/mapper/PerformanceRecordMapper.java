@@ -1,6 +1,6 @@
-package com.foryoung.foryoung.performance.mapper;
+package com.foryoung.foryoung.performance.record.mapper;
 
-import com.foryoung.foryoung.performance.dto.PerformanceRecordResponse;
+import com.foryoung.foryoung.performance.record.dto.PerformanceRecordResponse;
 import com.foryoung.foryoung.performance.record.entity.PerformanceRecord;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

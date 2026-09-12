@@ -2,15 +2,15 @@ package com.foryoung.foryoung.performance.record.repository;
 
 import com.foryoung.foryoung.statistics.dto.AttendanceCalendarResponse;
 import com.foryoung.foryoung.statistics.dto.FrequencyResult;
-import com.foryoung.foryoung.statistics.dto.PerformanceReportSummary;
+import com.foryoung.foryoung.statistics.dto.PerformanceStatisticsSummary;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface PerformanceStatisticsRepositoryCustom {
+public interface PerformanceRecordRepositoryCustom {
 
 
-    PerformanceReportSummary findReportSummary(
+    PerformanceStatisticsSummary findReportSummary(
             Long memberId,
             LocalDateTime startTime,
             LocalDateTime endTime

@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.performance.dto;
+package com.foryoung.foryoung.performance.schedule.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

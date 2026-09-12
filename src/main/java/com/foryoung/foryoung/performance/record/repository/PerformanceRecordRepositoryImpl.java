@@ -5,7 +5,7 @@ import com.foryoung.foryoung.performance.record.entity.QPerformanceRecord;
 import com.foryoung.foryoung.performance.schedule.entity.QPerformanceSchedule;
 import com.foryoung.foryoung.statistics.dto.AttendanceCalendarResponse;
 import com.foryoung.foryoung.statistics.dto.FrequencyResult;
-import com.foryoung.foryoung.statistics.dto.PerformanceReportSummary;
+import com.foryoung.foryoung.statistics.dto.PerformanceStatisticsSummary;
 import com.foryoung.foryoung.venue.entity.QVenue;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -18,23 +18,23 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class PerformanceStatisticsRepositoryImpl implements PerformanceRecordRepositoryCustom {
+public class PerformanceRecordRepositoryImpl implements PerformanceRecordRepositoryCustom {
 
 
     private final JPAQueryFactory queryFactory;
 
 
     @Override
-    public PerformanceReportSummary findReportSummary(Long memberId,
-                                                      LocalDateTime startTime,
-                                                      LocalDateTime endTime) {
+    public PerformanceStatisticsSummary findReportSummary(Long memberId,
+                                                          LocalDateTime startTime,
+                                                          LocalDateTime endTime) {
 
         QPerformanceRecord record = QPerformanceRecord.performanceRecord;
 
         return queryFactory
                 .select(
                         Projections.constructor(
-                                PerformanceReportSummary.class,
+                                PerformanceStatisticsSummary.class,
                                 record.count(),
                                 record.ticketPrice.sum().longValue(),
                                 record.ticketPrice.max(),

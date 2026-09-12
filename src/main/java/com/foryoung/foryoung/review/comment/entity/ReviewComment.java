@@ -1,8 +1,9 @@
-package com.foryoung.foryoung.review.entity;
+package com.foryoung.foryoung.review.comment.entity;
 
 import com.foryoung.foryoung.global.exception.CustomException;
 import com.foryoung.foryoung.global.exception.ErrorCode;
 import com.foryoung.foryoung.member.entity.Member;
+import com.foryoung.foryoung.review.review.entity.PerformanceReview;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

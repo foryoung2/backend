@@ -1,10 +1,10 @@
-package com.foryoung.foryoung.review.controller;
+package com.foryoung.foryoung.review.comment.controller;
 
 import com.foryoung.foryoung.auth.userdetails.CustomUserDetails;
-import com.foryoung.foryoung.review.dto.CommentCountResponse;
-import com.foryoung.foryoung.review.dto.CommentCreateRequest;
-import com.foryoung.foryoung.review.dto.CommentUpdateRequest;
-import com.foryoung.foryoung.review.dto.ReviewCommentResponse;
+import com.foryoung.foryoung.review.comment.dto.CommentCountResponse;
+import com.foryoung.foryoung.review.comment.dto.CommentCreateRequest;
+import com.foryoung.foryoung.review.comment.dto.CommentUpdateRequest;
+import com.foryoung.foryoung.review.comment.dto.ReviewCommentResponse;
 import com.foryoung.foryoung.review.comment.service.ReviewCommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

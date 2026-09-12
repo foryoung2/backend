@@ -1,8 +1,8 @@
-package com.foryoung.foryoung.performance.controller;
+package com.foryoung.foryoung.performance.schedule.controller;
 
-import com.foryoung.foryoung.performance.dto.PerformanceScheduleCreateRequest;
-import com.foryoung.foryoung.performance.dto.PerformanceScheduleResponse;
-import com.foryoung.foryoung.performance.service.PerformanceScheduleService;
+import com.foryoung.foryoung.performance.schedule.dto.PerformanceScheduleCreateRequest;
+import com.foryoung.foryoung.performance.schedule.dto.PerformanceScheduleResponse;
+import com.foryoung.foryoung.performance.schedule.service.PerformanceScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

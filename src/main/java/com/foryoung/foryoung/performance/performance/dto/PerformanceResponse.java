@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.performance.dto;
+package com.foryoung.foryoung.performance.performance.dto;
 
 import com.foryoung.foryoung.performance.performance.entity.Performance;
 import lombok.Builder;

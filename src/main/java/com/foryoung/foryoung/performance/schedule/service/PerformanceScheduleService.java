@@ -1,16 +1,18 @@
-package com.foryoung.foryoung.performance.service;
+package com.foryoung.foryoung.performance.schedule.service;
 
 import com.foryoung.foryoung.global.exception.CustomException;
 import com.foryoung.foryoung.global.exception.ErrorCode;
 import com.foryoung.foryoung.performance.schedule.dto.PerformanceScheduleCreateRequest;
-import com.foryoung.foryoung.performance.dto.PerformanceScheduleResponse;
+import com.foryoung.foryoung.performance.schedule.dto.PerformanceScheduleResponse;
 import com.foryoung.foryoung.performance.performance.entity.Performance;
-import com.foryoung.foryoung.performance.entity.PerformanceSchedule;
+import com.foryoung.foryoung.performance.schedule.entity.PerformanceSchedule;
 import com.foryoung.foryoung.performance.performance.repository.PerformanceRepository;
-import com.foryoung.foryoung.performance.repository.PerformanceScheduleRepository;
+import com.foryoung.foryoung.performance.schedule.repository.PerformanceScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +39,7 @@ public class PerformanceScheduleService {
 
         PerformanceSchedule savedSchedule = scheduleRepository.save(schedule);
 
-        return PerformanceScheduleResponse.from(savedSchedule);
+        return PerformanceScheduleResponse.from(savedSchedule, List.of());
 
     }
 

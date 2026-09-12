@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.review.mapper;
+package com.foryoung.foryoung.review.like.mapper;
 
 import com.foryoung.foryoung.review.like.dto.LikedReviewResponse;
 import com.foryoung.foryoung.review.like.entity.ReviewLike;

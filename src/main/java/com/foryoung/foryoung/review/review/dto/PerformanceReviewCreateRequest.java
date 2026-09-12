@@ -1,4 +1,4 @@
-package com.foryoung.foryoung.review.dto;
+package com.foryoung.foryoung.review.review.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

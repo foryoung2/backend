@@ -1,11 +1,11 @@
-package com.foryoung.foryoung.performance.controller;
+package com.foryoung.foryoung.performance.record.controller;
 
 import com.foryoung.foryoung.auth.userdetails.CustomUserDetails;
 import com.foryoung.foryoung.global.pagination.PageResponse;
-import com.foryoung.foryoung.performance.dto.PerformanceRecordCreateRequest;
-import com.foryoung.foryoung.performance.dto.PerformanceRecordResponse;
-import com.foryoung.foryoung.performance.dto.PerformanceRecordUpdateRequest;
-import com.foryoung.foryoung.performance.service.PerformanceRecordService;
+import com.foryoung.foryoung.performance.record.dto.PerformanceRecordCreateRequest;
+import com.foryoung.foryoung.performance.record.dto.PerformanceRecordResponse;
+import com.foryoung.foryoung.performance.record.dto.PerformanceRecordUpdateRequest;
+import com.foryoung.foryoung.performance.record.service.PerformanceRecordService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
