@@ -62,7 +62,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/auth/**",
                                 "/oauth2/**",
-                                "/members/login"
+                                "/members/login",
+                                "/ocr/**",
+                                "/images/**"
                         ).permitAll()
 
 
@@ -88,13 +90,17 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/performance-reviews/*/likes").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/performance-reviews/liked").hasRole("USER")
 
+                        .requestMatchers(HttpMethod.GET, "/venues/seat-views/me").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/venues/*/seat-views").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/venues/seat-views/*").hasRole("USER")
+
+                        .requestMatchers(HttpMethod.POST, "/venues").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/venues/**").permitAll()
 
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/venue-views/*",
-                                "/venue-views/*/views"
-                        ).permitAll()
+                        .requestMatchers("/performance-statistics/**").hasRole("USER")
+                        .requestMatchers("/performance-statistics/setlist").hasRole("USER")
+
+                        .requestMatchers("/friends/**").hasRole("USER")
 
                         .anyRequest().authenticated()
                 )
