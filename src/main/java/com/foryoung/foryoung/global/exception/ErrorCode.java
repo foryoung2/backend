@@ -34,6 +34,7 @@ public enum ErrorCode {
     REVIEW_LIKE_NOT_FOUND(HttpStatus.BAD_REQUEST, "LIKE_002", "Review like not found"),
 
     VENUE_NOT_FOUND(HttpStatus.NOT_FOUND, "VENUE_001", "Venue not found"),
+    VENUE_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "VENUE_002", "Venue already exists"),
 
     VENUE_SEAT_VIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "VENUE_VIEW_001", "Venue seat view not found"),
     VENUE_SEAT_VIEW_ACCESS_DENIED(HttpStatus.FORBIDDEN, "VENUE_VIEW_002", "You cannot delete another member's venue view"),
@@ -46,7 +47,24 @@ public enum ErrorCode {
     IMAGE_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "VENUE_VIEW_IMAGE_004", "Failed to save image"),
     IMAGE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "VENUE_VIEW_IMAGE_005", "Failed to delete image"),
 
-    ELASTICSEARCH_OPERATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "SEARCH_001", "Search service is temporarily unavailable");
+    ELASTICSEARCH_OPERATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "SEARCH_001", "Search service is temporarily unavailable"),
+
+    FRIENDSHIP_NOT_FOUND(HttpStatus.NOT_FOUND, "FRIEND_001", "Friend request not found"),
+    CANNOT_REQUEST_YOURSELF(HttpStatus.BAD_REQUEST, "FRIEND_002", "Cannot send friend request to yourself"),
+    FRIEND_REQUEST_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FRIEND_003", "Friend request already exists"),
+    INVALID_FRIENDSHIP_STATUS(HttpStatus.BAD_REQUEST, "FRIEND_004", "Invalid friend request status"),
+    CANNOT_PROCESS_FRIEND_REQUEST(HttpStatus.FORBIDDEN, "FRIEND_005", "You are not allowed to process this friend request"),
+    NOT_FRIEND(HttpStatus.FORBIDDEN, "FRIEND_006", "You are not part of this friendship"),
+    FRIEND_ALREADY_BLOCKED(HttpStatus.BAD_REQUEST, "FRIEND_007", "Friend is already blocked"),
+    CANNOT_UNBLOCK_FRIENDSHIP(HttpStatus.FORBIDDEN, "FRIEND_008", "You are not allowed to unblock this friendship"),
+
+    OCR_IMAGE_EMPTY(HttpStatus.BAD_REQUEST, "OCR_001", "OCR image file must not be empty"),
+    OCR_IMAGE_READ_FAILED(HttpStatus.BAD_REQUEST, "OCR_002", "Failed to read OCR image"),
+    OCR_PROCESS_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "OCR_003", "Failed to extract text from image"),
+
+    SETLIST_NOT_FOUND(HttpStatus.NOT_FOUND, "SETLIST_001", "Setlist not found"),
+    INVALID_SETLIST_ORDER(HttpStatus.BAD_REQUEST, "SETLIST_002", "Invalid setlist order");
+
     private final HttpStatus status;
     private final String code;
     private final String message;
