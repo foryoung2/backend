@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/performances/reports")
+@RequestMapping("/performance-statistics")
 public class PerformanceStatisticsController {
 
 
